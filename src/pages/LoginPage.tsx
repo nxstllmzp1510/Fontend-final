@@ -60,7 +60,7 @@ export default function LoginPage() {
           <div className="w-full max-w-[430px]">
             <div className="mb-7">
               <h2 className="text-[32px] font-bold text-[#171717]">
-                Welcome To Kitchen
+                Welcome To Shabu Inventory management
               </h2>
 
               <p className="mt-1 text-sm text-[#5f5a57]">
