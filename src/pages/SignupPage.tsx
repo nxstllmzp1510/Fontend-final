@@ -130,10 +130,11 @@ export default function SignupPage() {
 
               <button
                 type="button"
+                onClick={() => navigate('/forgot-password')} /* เพิ่ม onClick ตรงนี้ */
                 className="text-xs font-medium text-[#164c3d] hover:underline"
-              >
+            >
                 Forgot password?
-              </button>
+            </button>
 
               {/* ปุ่ม Sign Up หลัก */}
               <button

@@ -172,10 +172,11 @@ export default function LoginPage() {
               </div>
 
               <button
-                type="button"
-                className="text-xs font-medium text-[#164c3d] hover:underline"
+                 type="button"
+                  onClick={() => navigate('/forgot-password')} /* เพิ่ม onClick ตรงนี้ */
+                    className="text-xs font-medium text-[#164c3d] hover:underline"
               >
-                Forgot password?
+                  Forgot password?
               </button>
 
               <button

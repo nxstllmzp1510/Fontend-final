@@ -1,16 +1,15 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
+import ForgotPasswordPage from './pages/ForgotPasswordPage'; // 1. นำเข้าไฟล์
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* ถ้าเปิดหน้าแรก (/) ให้แสดงหน้า Login */}
         <Route path="/" element={<LoginPage />} />
-        
-        {/* ถ้าเปิด /signup ให้แสดงหน้า Signup */}
         <Route path="/signup" element={<SignupPage />} />
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} /> {/* 2. เพิ่มเส้นทางนี้ */}
       </Routes>
     </BrowserRouter>
   );
