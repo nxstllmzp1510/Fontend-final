@@ -9,8 +9,9 @@ import DashboardPage from './pages/admin/DashboardPage';
 import MenuManagementPage from './pages/admin/MenuManagementPage';
 import UserManagementPage from './pages/admin/UserManagementPage'; 
 import InventoryLogsPage from './pages/admin/InventoryLogsPage';
-// 1. นำเข้าไฟล์ System Logs
 import SystemLogsPage from './pages/admin/SystemLogsPage';
+// 1. นำเข้าไฟล์ใหม่
+import ExpiredGoodsPage from './pages/admin/ExpiredGoodsPage';
 
 function App() {
   return (
@@ -25,9 +26,10 @@ function App() {
           <Route path="menu" element={<MenuManagementPage />} />
           <Route path="user" element={<UserManagementPage />} /> 
           <Route path="inventory-logs" element={<InventoryLogsPage />} />
-          
-          {/* 2. เพิ่ม Route สำหรับหน้า System Logs */}
           <Route path="system-logs" element={<SystemLogsPage />} />
+          
+          {/* 2. เพิ่ม Route สำหรับหน้าตรวจสอบสินค้าหมดอายุ */}
+          <Route path="expired-inventory" element={<ExpiredGoodsPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
