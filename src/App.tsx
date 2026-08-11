@@ -1,7 +1,9 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import LoginPage from './pages/LoginPage';
-import SignupPage from './pages/SignupPage';
-import ForgotPasswordPage from './pages/ForgotPasswordPage'; // 1. นำเข้าไฟล์
+
+// แก้ 3 บรรทัดนี้ให้ชี้ไปที่โฟลเดอร์ auth ที่เพิ่งสร้างใหม่
+import LoginPage from './pages/auth/LoginPage';
+import SignupPage from './pages/auth/SignupPage';
+import ForgotPasswordPage from './pages/auth/ForgotPasswordPage';
 
 function App() {
   return (
@@ -9,7 +11,8 @@ function App() {
       <Routes>
         <Route path="/" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
-        <Route path="/forgot-password" element={<ForgotPasswordPage />} /> {/* 2. เพิ่มเส้นทางนี้ */}
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+        {/* ... */}
       </Routes>
     </BrowserRouter>
   );
