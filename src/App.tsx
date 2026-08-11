@@ -4,9 +4,10 @@ import LoginPage from './pages/auth/LoginPage';
 import SignupPage from './pages/auth/SignupPage';
 import ForgotPasswordPage from './pages/auth/ForgotPasswordPage';
 
-// นำเข้า 2 ไฟล์ใหม่ที่เราเพิ่งสร้าง
+// นำเข้า Layout และหน้าต่างๆ ของ Admin
 import AdminLayout from './layouts/AdminLayout';
 import DashboardPage from './pages/admin/DashboardPage';
+import MenuManagementPage from './pages/admin/MenuManagementPage'; // นำเข้าหน้า Menu ที่เพิ่งสร้าง
 
 function App() {
   return (
@@ -22,9 +23,8 @@ function App() {
           {/* ใช้ index เพื่อบอกว่านี่คือหน้า Default ย่อย เมื่อเข้า /admin */}
           <Route index element={<DashboardPage />} />
           
-          {/* อนาคตถ้าสร้างหน้า Menu ก็มาใส่เพิ่มตรงนี้ได้เลย 
-              <Route path="menu" element={<MenuPage />} /> 
-          */}
+          {/* หน้าจัดการเมนู เมื่อเข้า /admin/menu */}
+          <Route path="menu" element={<MenuManagementPage />} /> {/* เพิ่ม Route สำหรับหน้า Menu */}
         </Route>
       </Routes>
     </BrowserRouter>
