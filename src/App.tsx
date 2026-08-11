@@ -7,8 +7,9 @@ import ForgotPasswordPage from './pages/auth/ForgotPasswordPage';
 import AdminLayout from './layouts/AdminLayout';
 import DashboardPage from './pages/admin/DashboardPage';
 import MenuManagementPage from './pages/admin/MenuManagementPage';
-// 1. นำเข้าไฟล์ใหม่
 import UserManagementPage from './pages/admin/UserManagementPage'; 
+// 1. นำเข้าไฟล์ Inventory Logs
+import InventoryLogsPage from './pages/admin/InventoryLogsPage';
 
 function App() {
   return (
@@ -21,9 +22,10 @@ function App() {
         <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<DashboardPage />} />
           <Route path="menu" element={<MenuManagementPage />} />
-          
-          {/* 2. เพิ่ม Route สำหรับหน้า User */}
           <Route path="user" element={<UserManagementPage />} /> 
+          
+          {/* 2. เพิ่ม Route สำหรับหน้า Inventory Logs */}
+          <Route path="inventory-logs" element={<InventoryLogsPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
