@@ -17,6 +17,8 @@ import ExpiredGoodsPage from './pages/admin/ExpiredGoodsPage';
 // --- กลุ่มหน้า Cashier ---
 import CashierLayout from './layouts/CashierLayout';
 import CashierDashboardPage from './pages/cashier/CashierDashboardPage';
+// 1. นำเข้าไฟล์ CashierOrderListPage ที่เพิ่งสร้าง
+import CashierOrderListPage from './pages/cashier/CashierOrderListPage'; 
 
 function App() {
   return (
@@ -40,6 +42,9 @@ function App() {
         {/* เส้นทางกลุ่มหน้า Cashier */}
         <Route path="/cashier" element={<CashierLayout />}>
           <Route index element={<CashierDashboardPage />} />
+          
+          {/* 2. เพิ่ม Route สำหรับหน้ารายการสั่งอาหาร */}
+          <Route path="orders" element={<CashierOrderListPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

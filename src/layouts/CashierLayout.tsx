@@ -11,9 +11,10 @@ export default function CashierLayout() {
   const navigate = useNavigate();
   const location = useLocation();
 
+  // 👇 แก้ไขตรงนี้ให้ตรงกับหน้าตาและเส้นทาง
   const navItems = [
-    { name: "Table Management", path: "/cashier", icon: Icons.Dashboard },
-    { name: "Billing History", path: "/cashier/history", icon: Icons.Bill },
+    { name: "Dashboard", path: "/cashier", icon: Icons.Dashboard },
+    { name: "Orders list", path: "/cashier/orders", icon: Icons.Bill },
   ];
 
   return (
@@ -34,6 +35,7 @@ export default function CashierLayout() {
         <nav className="flex-1 mt-2">
           <ul className="space-y-1.5 px-3">
             {navItems.map((item) => {
+              // 👇 เช็กเส้นทางเพื่อทำไฮไลท์ปุ่ม
               const isActive = location.pathname === item.path;
               return (
                 <li key={item.name}>
