@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // 👈 1. นำเข้า useNavigate
 
 // --- Icons ชุดใหม่สำหรับหน้านี้ ---
 const Icons = {
@@ -27,6 +28,7 @@ const Icons = {
 
 export default function CashierOrderListPage() {
   const [selectedTable, setSelectedTable] = useState('Table 2');
+  const navigate = useNavigate(); // 👈 2. เรียกใช้งานฟังก์ชันสำหรับเปลี่ยนหน้า
 
   return (
     <div className="flex w-full h-[calc(100vh-60px)] bg-[#F8F6F1]">
@@ -193,7 +195,11 @@ export default function CashierOrderListPage() {
             <button className="flex-1 py-3.5 bg-transparent border border-[#B3ADA5] text-[#5A403E] font-bold rounded-lg hover:bg-white transition-colors text-sm">
               พิมพ์ใบแจ้งหนี้
             </button>
-            <button className="flex-1 py-3.5 bg-[#5A403E] text-white font-bold rounded-lg hover:bg-[#4a322f] shadow-md transition-colors text-sm">
+            {/* 👈 3. ใส่ onClick ให้ปุ่มชำระเงินตรงนี้ */}
+            <button 
+              onClick={() => navigate('/cashier/payment')}
+              className="flex-1 py-3.5 bg-[#5A403E] text-white font-bold rounded-lg hover:bg-[#4a322f] shadow-md transition-colors text-sm"
+            >
               ชำระเงิน
             </button>
           </div>
