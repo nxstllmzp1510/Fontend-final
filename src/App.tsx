@@ -34,8 +34,9 @@ import StaffFreezerStockPage from './pages/staff/StaffFreezerStockPage';
 import StaffServingQueuePage from './pages/staff/StaffServingQueuePage';
 import StaffPrepFridgePage from './pages/staff/StaffPrepFridgePage';
 import StaffTransferStockPage from './pages/staff/StaffTransferStockPage';
-// 1. นำเข้าไฟล์บันทึกรับเข้าของ
 import StaffBatchEntryPage from './pages/staff/StaffBatchEntryPage';
+// 1. นำเข้าไฟล์ Kitchen Queue
+import StaffKitchenQueuePage from './pages/staff/StaffKitchenQueuePage';
 
 function App() {
   return (
@@ -67,14 +68,16 @@ function App() {
 
         <Route path="/staff" element={<StaffLayout />}>
           <Route index element={<StaffDashboardPage />} />
-          <Route path="queue" element={<StaffServingQueuePage />} />
-          <Route path="tables" element={<StaffTableOrderPage />} />
-          <Route path="freezer" element={<StaffFreezerStockPage />} />
-          <Route path="prep" element={<StaffPrepFridgePage />} />
-          <Route path="transfer" element={<StaffTransferStockPage />} />
           
-          {/* 2. ผูก Route เข้ากับ /staff/batch */}
+          {/* 2. ผูก Route เข้ากับ /staff/kitchen */}
+          <Route path="kitchen" element={<StaffKitchenQueuePage />} />
+          
           <Route path="batch" element={<StaffBatchEntryPage />} />
+          <Route path="transfer" element={<StaffTransferStockPage />} />
+          <Route path="queue" element={<StaffServingQueuePage />} />
+          <Route path="prep" element={<StaffPrepFridgePage />} />
+          <Route path="freezer" element={<StaffFreezerStockPage />} />
+          <Route path="tables" element={<StaffTableOrderPage />} />
         </Route>
         
       </Routes>
