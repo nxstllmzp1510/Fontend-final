@@ -27,9 +27,10 @@ import CustomerCartPage from './pages/customer/CustomerCartPage';
 import CustomerSuccessPage from './pages/customer/CustomerSuccessPage'; 
 
 // --- กลุ่มหน้า Staff (พนักงานปฏิบัติการ) ---
-// 1. นำเข้าไฟล์ Staff ที่เพิ่งสร้าง
 import StaffLayout from './layouts/StaffLayout';
 import StaffDashboardPage from './pages/staff/StaffDashboardPage';
+// 1. นำเข้าไฟล์โต๊ะอาหารที่เพิ่งสร้าง
+import StaffTableOrderPage from './pages/staff/StaffTableOrderPage';
 
 function App() {
   return (
@@ -58,14 +59,17 @@ function App() {
           <Route path="receipt" element={<CashierReceiptPage />} />
         </Route>
 
-        {/* เส้นทางกลุ่มหน้า Customer (สำหรับลูกค้าสแกน QR Code) */}
+        {/* เส้นทางกลุ่มหน้า Customer */}
         <Route path="/order" element={<CustomerMenuPage />} />
         <Route path="/order/cart" element={<CustomerCartPage />} />
         <Route path="/order/success" element={<CustomerSuccessPage />} />
 
-        {/* 2. เพิ่ม Route สำหรับกลุ่มหน้า Staff */}
+        {/* เส้นทางกลุ่มหน้า Staff */}
         <Route path="/staff" element={<StaffLayout />}>
           <Route index element={<StaffDashboardPage />} />
+          
+          {/* 2. ผูก Route หน้าโต๊ะอาหารเข้ากับ /staff/tables */}
+          <Route path="tables" element={<StaffTableOrderPage />} />
         </Route>
         
       </Routes>
