@@ -24,18 +24,28 @@ import CashierReceiptPage from './pages/cashier/CashierReceiptPage';
 // --- กลุ่มหน้า Customer ---
 import CustomerMenuPage from './pages/customer/CustomerMenuPage'; 
 import CustomerCartPage from './pages/customer/CustomerCartPage';
-import CustomerSuccessPage from './pages/customer/CustomerSuccessPage'; //เข้าหน้า Success
+import CustomerSuccessPage from './pages/customer/CustomerSuccessPage'; 
+
+// --- กลุ่มหน้า Staff ---
+import StaffLayout from './layouts/StaffLayout';
+import StaffDashboardPage from './pages/staff/StaffDashboardPage';
+import StaffTableOrderPage from './pages/staff/StaffTableOrderPage';
+import StaffFreezerStockPage from './pages/staff/StaffFreezerStockPage';
+import StaffServingQueuePage from './pages/staff/StaffServingQueuePage';
+import StaffPrepFridgePage from './pages/staff/StaffPrepFridgePage';
+import StaffTransferStockPage from './pages/staff/StaffTransferStockPage';
+import StaffBatchEntryPage from './pages/staff/StaffBatchEntryPage';
+// 1. นำเข้าไฟล์ Kitchen Queue
+import StaffKitchenQueuePage from './pages/staff/StaffKitchenQueuePage';
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* เส้นทางกลุ่มหน้า Auth */}
         <Route path="/" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
 
-        {/* เส้นทางกลุ่มหน้า Admin */}
         <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<DashboardPage />} />
           <Route path="menu" element={<MenuManagementPage />} />
@@ -45,7 +55,6 @@ function App() {
           <Route path="expired-inventory" element={<ExpiredGoodsPage />} />
         </Route>
 
-        {/* เส้นทางกลุ่มหน้า Cashier */}
         <Route path="/cashier" element={<CashierLayout />}>
           <Route index element={<CashierDashboardPage />} />
           <Route path="orders" element={<CashierOrderListPage />} />
@@ -53,11 +62,23 @@ function App() {
           <Route path="receipt" element={<CashierReceiptPage />} />
         </Route>
 
-        {/* เส้นทางกลุ่มหน้า Customer (สำหรับลูกค้าสแกน QR Code) */}
         <Route path="/order" element={<CustomerMenuPage />} />
         <Route path="/order/cart" element={<CustomerCartPage />} />
-        {/* 👈 เพิ่ม Route ให้หน้า Success */}
         <Route path="/order/success" element={<CustomerSuccessPage />} />
+
+        <Route path="/staff" element={<StaffLayout />}>
+          <Route index element={<StaffDashboardPage />} />
+          
+          {/* 2. ผูก Route เข้ากับ /staff/kitchen */}
+          <Route path="kitchen" element={<StaffKitchenQueuePage />} />
+          
+          <Route path="batch" element={<StaffBatchEntryPage />} />
+          <Route path="transfer" element={<StaffTransferStockPage />} />
+          <Route path="queue" element={<StaffServingQueuePage />} />
+          <Route path="prep" element={<StaffPrepFridgePage />} />
+          <Route path="freezer" element={<StaffFreezerStockPage />} />
+          <Route path="tables" element={<StaffTableOrderPage />} />
+        </Route>
         
       </Routes>
     </BrowserRouter>
