@@ -24,7 +24,12 @@ import CashierReceiptPage from './pages/cashier/CashierReceiptPage';
 // --- กลุ่มหน้า Customer ---
 import CustomerMenuPage from './pages/customer/CustomerMenuPage'; 
 import CustomerCartPage from './pages/customer/CustomerCartPage';
-import CustomerSuccessPage from './pages/customer/CustomerSuccessPage'; //เข้าหน้า Success
+import CustomerSuccessPage from './pages/customer/CustomerSuccessPage'; 
+
+// --- กลุ่มหน้า Staff (พนักงานปฏิบัติการ) ---
+// 1. นำเข้าไฟล์ Staff ที่เพิ่งสร้าง
+import StaffLayout from './layouts/StaffLayout';
+import StaffDashboardPage from './pages/staff/StaffDashboardPage';
 
 function App() {
   return (
@@ -56,8 +61,12 @@ function App() {
         {/* เส้นทางกลุ่มหน้า Customer (สำหรับลูกค้าสแกน QR Code) */}
         <Route path="/order" element={<CustomerMenuPage />} />
         <Route path="/order/cart" element={<CustomerCartPage />} />
-        {/* 👈 เพิ่ม Route ให้หน้า Success */}
         <Route path="/order/success" element={<CustomerSuccessPage />} />
+
+        {/* 2. เพิ่ม Route สำหรับกลุ่มหน้า Staff */}
+        <Route path="/staff" element={<StaffLayout />}>
+          <Route index element={<StaffDashboardPage />} />
+        </Route>
         
       </Routes>
     </BrowserRouter>
