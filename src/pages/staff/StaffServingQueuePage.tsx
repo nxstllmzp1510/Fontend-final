@@ -26,160 +26,134 @@ export default function StaffServingQueuePage() {
   };
 
   return (
-    <div className="w-full h-screen overflow-y-auto bg-[#FDFBF7]">
+    <div className="w-full h-screen overflow-y-auto bg-[#FDFBF7] p-8 pb-20">
       
-      {/* Top Navigation (จำลอง) */}
-      <div className="h-[70px] flex justify-between items-center px-8 border-b border-[#EAE5DF] bg-[#FDFBF7] sticky top-0 z-20">
-        <div className="relative w-[300px]">
-          <Icons.Search />
-          <input type="text" placeholder="Search orders..." className="w-full pl-9 pr-4 py-2 bg-[#F4EFEA] border border-transparent rounded-full text-sm outline-none focus:border-[#d6d0c4]" />
-          <div className="absolute left-3 top-1/2 -translate-y-1/2"><Icons.Search /></div>
+      {/* Header Section */}
+      <div className="flex justify-between items-end mb-8">
+        <div>
+          <h1 className="text-3xl font-bold text-[#302221] mb-1">Serving Queue</h1>
+          <p className="text-sm text-[#7B726B]">Orders ready for table delivery</p>
         </div>
-        <div className="flex items-center gap-6">
-          <button className="relative text-[#302221] hover:text-[#5A403E]">
-            <Icons.Bell />
-            <span className="absolute -top-1 -right-1 bg-[#E53E3E] w-2 h-2 rounded-full"></span>
-          </button>
-          <div className="flex items-center gap-3 border-l border-[#EAE5DF] pl-6">
-            <div className="text-right">
-              <p className="text-sm font-bold text-[#302221] leading-tight">Chef Julian</p>
-              <p className="text-[11px] font-mono text-[#7B726B]">Kitchen Manager</p>
-            </div>
-            <div className="w-10 h-10 rounded-full bg-[#d6d0c4] overflow-hidden border border-[#EAE5DF]">
-              <img src="https://i.pravatar.cc/150?u=julian" alt="profile" />
-            </div>
-          </div>
+        <div className="flex items-center gap-2 bg-[#EAE5DF] px-4 py-2 rounded-lg text-sm font-bold font-mono text-[#302221] shadow-sm">
+          <Icons.Clock /> Avg. Service: 8m 20s
         </div>
       </div>
 
-      <div className="p-8">
-        {/* Header Section */}
-        <div className="flex justify-between items-end mb-8">
-          <div>
-            <h1 className="text-3xl font-bold text-[#302221] mb-1">Serving Queue</h1>
-            <p className="text-sm text-[#7B726B]">Orders ready for table delivery</p>
-          </div>
-          <div className="flex items-center gap-2 bg-[#EAE5DF] px-4 py-2 rounded-lg text-sm font-bold font-mono text-[#302221] shadow-sm">
-            <Icons.Clock /> Avg. Service: 8m 20s
-          </div>
-        </div>
-
-        {/* Main Grid Layout */}
-        <div className="grid grid-cols-[1fr_340px] gap-8">
-          
-          {/* Left Column: Order List */}
-          <div className="space-y-4">
-            {queue.length > 0 ? queue.map(item => (
-              <div key={item.id} className="bg-white border border-[#EAE5DF] rounded-xl p-4 flex items-center justify-between shadow-[0_2px_10px_rgb(0,0,0,0.02)] hover:border-[#d6d0c4] transition-colors">
-                <div className="flex items-center gap-5">
-                  <img src={item.img} alt={item.name} className="w-16 h-16 rounded-lg object-cover border border-[#EAE5DF]" />
-                  <div>
-                    <div className="flex items-center gap-3 mb-1">
-                      {item.urgent && <span className="bg-[#894833] text-white text-[10px] font-bold px-2 py-0.5 rounded shadow-sm">URGENT</span>}
-                      <h3 className="text-lg font-bold text-[#302221]">{item.name}</h3>
-                    </div>
-                    <p className="text-xs font-mono text-[#7B726B]">
-                      Server: {item.server} <span className="mx-2">•</span> Ordered {item.time}
-                    </p>
-                  </div>
-                </div>
-                
-                <div className="flex items-center gap-6">
-                  <div className="text-center">
-                    <p className="text-[10px] font-bold tracking-widest text-[#999] uppercase mb-1">Table</p>
-                    <p className="text-3xl font-black text-[#302221] leading-none">{item.table}</p>
-                  </div>
-                  <button 
-                    onClick={() => handleConfirmServed(item.id)}
-                    className="h-[60px] px-6 bg-[#4A3432] hover:bg-[#382625] text-white font-bold rounded-lg transition-colors flex flex-col justify-center items-center shadow-md"
-                  >
-                    <span>Confirm</span>
-                    <span>Served</span>
-                  </button>
-                </div>
-              </div>
-            )) : (
-              <div className="bg-white border border-dashed border-[#d6d0c4] rounded-xl p-12 flex flex-col items-center justify-center text-[#999]">
-                <Icons.Cutlery />
-                <p className="mt-4 font-bold text-[#7B726B]">No pending orders to serve</p>
-                <p className="text-sm">Great job! The queue is clear.</p>
-              </div>
-            )}
-          </div>
-
-          {/* Right Column: Widgets */}
-          <div className="space-y-6">
-            
-            {/* Stock Alert */}
-            <div className="bg-[#FCE8E8] border border-[#F8CACA] rounded-xl p-6 shadow-sm">
-              <div className="flex gap-3 mb-4">
-                <div className="mt-1"><Icons.AlertTriangle /></div>
+      {/* Main Grid Layout */}
+      <div className="grid grid-cols-[1fr_340px] gap-8">
+        
+        {/* Left Column: Order List */}
+        <div className="space-y-4">
+          {queue.length > 0 ? queue.map(item => (
+            <div key={item.id} className="bg-white border border-[#EAE5DF] rounded-xl p-4 flex items-center justify-between shadow-[0_2px_10px_rgb(0,0,0,0.02)] hover:border-[#d6d0c4] transition-colors">
+              <div className="flex items-center gap-5">
+                <img src={item.img} alt={item.name} className="w-16 h-16 rounded-lg object-cover border border-[#EAE5DF]" />
                 <div>
-                  <h3 className="font-bold text-[#C53030] text-lg mb-1">Stock Alert: Critical</h3>
-                  <p className="text-xs text-[#C53030] leading-relaxed">5 items expiring in less than 48h.<br/>Estimated value at risk: $145.00.</p>
-                </div>
-              </div>
-              <button className="w-full py-2.5 bg-[#6b2121] hover:bg-[#4a1717] text-white text-sm font-bold rounded-lg shadow-sm transition-colors">
-                View Expiring Items
-              </button>
-            </div>
-
-            {/* Staff Performance */}
-            <div className="bg-white border border-[#EAE5DF] rounded-xl p-6 shadow-sm">
-              <h3 className="text-lg font-bold text-[#302221] mb-6">Staff Performance</h3>
-              <div className="space-y-5">
-                {[
-                  { name: "Sarah Jenkins", served: 12, percent: 85 },
-                  { name: "Marcus Wong", served: 8, percent: 55 },
-                  { name: "Alex Chen", served: 5, percent: 35 },
-                ].map((staff, i) => (
-                  <div key={i}>
-                    <div className="flex justify-between text-xs font-bold mb-2">
-                      <span className="text-[#302221] font-mono">{staff.name}</span>
-                      <span className="text-[#7B726B] font-mono">{staff.served} items served</span>
-                    </div>
-                    <div className="h-2 w-full bg-[#F4EFEA] rounded-full">
-                      <div className="h-full bg-[#4A3432] rounded-full" style={{ width: `${staff.percent}%` }}></div>
-                    </div>
+                  <div className="flex items-center gap-3 mb-1">
+                    {item.urgent && <span className="bg-[#894833] text-white text-[10px] font-bold px-2 py-0.5 rounded shadow-sm">URGENT</span>}
+                    <h3 className="text-lg font-bold text-[#302221]">{item.name}</h3>
                   </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Floor Status */}
-            <div className="bg-white border border-[#EAE5DF] rounded-xl p-6 shadow-sm">
-              <div className="flex justify-between items-center mb-6">
-                <h3 className="text-lg font-bold text-[#302221]">Floor Status</h3>
-                <span className="text-[10px] font-bold bg-[#EAE5DF] text-[#7B726B] px-2 py-1 rounded-full">80% Capacity</span>
+                  <p className="text-xs font-mono text-[#7B726B]">
+                    Server: {item.server} <span className="mx-2">•</span> Ordered {item.time}
+                  </p>
+                </div>
               </div>
               
-              <div className="grid grid-cols-3 gap-3">
-                {[
-                  { id: 'T01', status: 'eating', icon: <Icons.Users /> },
-                  { id: 'T02', status: 'waiting', icon: <Icons.Cutlery />, alert: true },
-                  { id: 'T03', status: 'empty', icon: null },
-                  { id: 'T04', status: 'empty', icon: null },
-                  { id: 'T05', status: 'waiting', icon: <Icons.Cutlery />, alert: true },
-                  { id: 'T06', status: 'empty', icon: null },
-                  { id: 'T11', status: 'empty', icon: null },
-                  { id: 'T12', status: 'waiting', icon: <Icons.Cutlery />, alert: true },
-                  { id: 'T13', status: 'eating', icon: <Icons.Users /> },
-                ].map((table, i) => (
-                  <div key={i} className={`
-                    relative h-[70px] rounded-md flex flex-col justify-center items-center gap-1 border
-                    ${table.status === 'eating' ? 'bg-[#EAE5DF] border-transparent text-[#302221]' : 
-                      table.status === 'waiting' ? 'bg-[#FEF2F2] border-[#F8CACA] text-[#C53030]' : 
-                      'bg-[#F4EFEA] border-transparent text-[#999]'}
-                  `}>
-                    {table.alert && <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-[#C53030] rounded-full border border-white"></span>}
-                    <span className="text-[11px] font-bold font-mono">{table.id}</span>
-                    {table.icon && <div className="scale-75">{table.icon}</div>}
-                  </div>
-                ))}
+              <div className="flex items-center gap-6">
+                <div className="text-center">
+                  <p className="text-[10px] font-bold tracking-widest text-[#999] uppercase mb-1">Table</p>
+                  <p className="text-3xl font-black text-[#302221] leading-none">{item.table}</p>
+                </div>
+                <button 
+                  onClick={() => handleConfirmServed(item.id)}
+                  className="h-[60px] px-6 bg-[#4A3432] hover:bg-[#382625] text-white font-bold rounded-lg transition-colors flex flex-col justify-center items-center shadow-md"
+                >
+                  <span>Confirm</span>
+                  <span>Served</span>
+                </button>
               </div>
             </div>
+          )) : (
+            <div className="bg-white border border-dashed border-[#d6d0c4] rounded-xl p-12 flex flex-col items-center justify-center text-[#999]">
+              <Icons.Cutlery />
+              <p className="mt-4 font-bold text-[#7B726B]">No pending orders to serve</p>
+              <p className="text-sm">Great job! The queue is clear.</p>
+            </div>
+          )}
+        </div>
 
+        {/* Right Column: Widgets */}
+        <div className="space-y-6">
+          
+          {/* Stock Alert */}
+          <div className="bg-[#FCE8E8] border border-[#F8CACA] rounded-xl p-6 shadow-sm">
+            <div className="flex gap-3 mb-4">
+              <div className="mt-1"><Icons.AlertTriangle /></div>
+              <div>
+                <h3 className="font-bold text-[#C53030] text-lg mb-1">Stock Alert: Critical</h3>
+                <p className="text-xs text-[#C53030] leading-relaxed">5 items expiring in less than 48h.<br/>Estimated value at risk: $145.00.</p>
+              </div>
+            </div>
+            <button className="w-full py-2.5 bg-[#6b2121] hover:bg-[#4a1717] text-white text-sm font-bold rounded-lg shadow-sm transition-colors">
+              View Expiring Items
+            </button>
           </div>
+
+          {/* Staff Performance */}
+          <div className="bg-white border border-[#EAE5DF] rounded-xl p-6 shadow-sm">
+            <h3 className="text-lg font-bold text-[#302221] mb-6">Staff Performance</h3>
+            <div className="space-y-5">
+              {[
+                { name: "Sarah Jenkins", served: 12, percent: 85 },
+                { name: "Marcus Wong", served: 8, percent: 55 },
+                { name: "Alex Chen", served: 5, percent: 35 },
+              ].map((staff, i) => (
+                <div key={i}>
+                  <div className="flex justify-between text-xs font-bold mb-2">
+                    <span className="text-[#302221] font-mono">{staff.name}</span>
+                    <span className="text-[#7B726B] font-mono">{staff.served} items served</span>
+                  </div>
+                  <div className="h-2 w-full bg-[#F4EFEA] rounded-full">
+                    <div className="h-full bg-[#4A3432] rounded-full" style={{ width: `${staff.percent}%` }}></div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Floor Status */}
+          <div className="bg-white border border-[#EAE5DF] rounded-xl p-6 shadow-sm">
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="text-lg font-bold text-[#302221]">Floor Status</h3>
+              <span className="text-[10px] font-bold bg-[#EAE5DF] text-[#7B726B] px-2 py-1 rounded-full">80% Capacity</span>
+            </div>
+            
+            <div className="grid grid-cols-3 gap-3">
+              {[
+                { id: 'T01', status: 'eating', icon: <Icons.Users /> },
+                { id: 'T02', status: 'waiting', icon: <Icons.Cutlery />, alert: true },
+                { id: 'T03', status: 'empty', icon: null },
+                { id: 'T04', status: 'empty', icon: null },
+                { id: 'T05', status: 'waiting', icon: <Icons.Cutlery />, alert: true },
+                { id: 'T06', status: 'empty', icon: null },
+                { id: 'T11', status: 'empty', icon: null },
+                { id: 'T12', status: 'waiting', icon: <Icons.Cutlery />, alert: true },
+                { id: 'T13', status: 'eating', icon: <Icons.Users /> },
+              ].map((table, i) => (
+                <div key={i} className={`
+                  relative h-[70px] rounded-md flex flex-col justify-center items-center gap-1 border
+                  ${table.status === 'eating' ? 'bg-[#EAE5DF] border-transparent text-[#302221]' : 
+                    table.status === 'waiting' ? 'bg-[#FEF2F2] border-[#F8CACA] text-[#C53030]' : 
+                    'bg-[#F4EFEA] border-transparent text-[#999]'}
+                `}>
+                  {table.alert && <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-[#C53030] rounded-full border border-white"></span>}
+                  <span className="text-[11px] font-bold font-mono">{table.id}</span>
+                  {table.icon && <div className="scale-75">{table.icon}</div>}
+                </div>
+              ))}
+            </div>
+          </div>
+
         </div>
       </div>
     </div>

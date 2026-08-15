@@ -31,8 +31,9 @@ import StaffLayout from './layouts/StaffLayout';
 import StaffDashboardPage from './pages/staff/StaffDashboardPage';
 import StaffTableOrderPage from './pages/staff/StaffTableOrderPage';
 import StaffFreezerStockPage from './pages/staff/StaffFreezerStockPage';
-// 1. นำเข้าไฟล์หน้าคิวเสิร์ฟที่เพิ่งสร้าง
 import StaffServingQueuePage from './pages/staff/StaffServingQueuePage';
+// 1. นำเข้าไฟล์หน้าตู้แช่แปรรูปที่เพิ่งสร้าง
+import StaffPrepFridgePage from './pages/staff/StaffPrepFridgePage';
 
 function App() {
   return (
@@ -69,12 +70,12 @@ function App() {
         {/* เส้นทางกลุ่มหน้า Staff */}
         <Route path="/staff" element={<StaffLayout />}>
           <Route index element={<StaffDashboardPage />} />
-          
-          {/* 2. ผูก Route หน้าคิวเสิร์ฟเข้ากับ /staff/queue */}
           <Route path="queue" element={<StaffServingQueuePage />} />
-          
           <Route path="tables" element={<StaffTableOrderPage />} />
           <Route path="freezer" element={<StaffFreezerStockPage />} />
+          
+          {/* 2. ผูก Route หน้าตู้แช่แปรรูปเข้ากับ /staff/prep */}
+          <Route path="prep" element={<StaffPrepFridgePage />} />
         </Route>
         
       </Routes>
