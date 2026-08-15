@@ -33,8 +33,9 @@ import StaffTableOrderPage from './pages/staff/StaffTableOrderPage';
 import StaffFreezerStockPage from './pages/staff/StaffFreezerStockPage';
 import StaffServingQueuePage from './pages/staff/StaffServingQueuePage';
 import StaffPrepFridgePage from './pages/staff/StaffPrepFridgePage';
-// 1. นำเข้าไฟล์เบิกของ
 import StaffTransferStockPage from './pages/staff/StaffTransferStockPage';
+// 1. นำเข้าไฟล์บันทึกรับเข้าของ
+import StaffBatchEntryPage from './pages/staff/StaffBatchEntryPage';
 
 function App() {
   return (
@@ -70,9 +71,10 @@ function App() {
           <Route path="tables" element={<StaffTableOrderPage />} />
           <Route path="freezer" element={<StaffFreezerStockPage />} />
           <Route path="prep" element={<StaffPrepFridgePage />} />
-          
-          {/* 2. ผูก Route เข้ากับ /staff/transfer */}
           <Route path="transfer" element={<StaffTransferStockPage />} />
+          
+          {/* 2. ผูก Route เข้ากับ /staff/batch */}
+          <Route path="batch" element={<StaffBatchEntryPage />} />
         </Route>
         
       </Routes>
