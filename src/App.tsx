@@ -29,8 +29,9 @@ import CustomerSuccessPage from './pages/customer/CustomerSuccessPage';
 // --- กลุ่มหน้า Staff (พนักงานปฏิบัติการ) ---
 import StaffLayout from './layouts/StaffLayout';
 import StaffDashboardPage from './pages/staff/StaffDashboardPage';
-// 1. นำเข้าไฟล์โต๊ะอาหารที่เพิ่งสร้าง
 import StaffTableOrderPage from './pages/staff/StaffTableOrderPage';
+// 1. นำเข้าไฟล์หน้าตู้แช่แข็งที่เพิ่งสร้าง
+import StaffFreezerStockPage from './pages/staff/StaffFreezerStockPage';
 
 function App() {
   return (
@@ -67,9 +68,10 @@ function App() {
         {/* เส้นทางกลุ่มหน้า Staff */}
         <Route path="/staff" element={<StaffLayout />}>
           <Route index element={<StaffDashboardPage />} />
-          
-          {/* 2. ผูก Route หน้าโต๊ะอาหารเข้ากับ /staff/tables */}
           <Route path="tables" element={<StaffTableOrderPage />} />
+          
+          {/* 2. ผูก Route หน้าตู้แช่แข็งเข้ากับ /staff/freezer */}
+          <Route path="freezer" element={<StaffFreezerStockPage />} />
         </Route>
         
       </Routes>
