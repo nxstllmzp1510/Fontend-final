@@ -7,8 +7,8 @@ export default function SignupPage() {
   const navigate = useNavigate();
 
   return (
-    <main className="min-h-screen bg-[#dbe5f5] p-4 md:p-8">
-      <div className="mx-auto flex min-h-[calc(100vh-4rem)] max-w-[1400px] overflow-hidden bg-[#fbf8f3]">
+    <main className="min-h-screen bg-[#fbf8f3]">
+      <div className="flex min-h-screen w-full overflow-hidden bg-[#fbf8f3]">
         
         {/* Left Form Section (สลับมาอยู่ฝั่งซ้าย) */}
         <section className="flex w-full items-center justify-center px-6 py-12 lg:w-1/2">

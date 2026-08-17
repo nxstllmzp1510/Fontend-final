@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { type FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function ForgotPasswordPage() {
@@ -6,7 +6,7 @@ export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
     // จำลองการส่ง API รีเซ็ตรหัสผ่าน
     console.log("Sending reset link to:", email);
@@ -14,8 +14,8 @@ export default function ForgotPasswordPage() {
   };
 
   return (
-    <main className="min-h-screen bg-[#dbe5f5] p-4 md:p-8">
-      <div className="mx-auto flex min-h-[calc(100vh-4rem)] max-w-[1400px] overflow-hidden bg-[#fbf8f3]">
+    <main className="min-h-screen bg-[#fbf8f3]">
+      <div className="flex min-h-screen w-full overflow-hidden bg-[#fbf8f3]">
         
         {/* Left Branding Section (ดึงมาจากหน้า Login ให้เข้าธีมเป๊ะๆ) */}
         <section className="relative hidden w-1/2 flex-col bg-[#302221] px-10 py-14 text-white lg:flex">

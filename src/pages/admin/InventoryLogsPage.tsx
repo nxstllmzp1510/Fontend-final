@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import { useMemo, useState } from 'react';
+import { useInventory } from '../../contexts/InventoryContext';
 
 // --- Icons ---
 const Icons = {
@@ -9,18 +10,14 @@ const Icons = {
   Calendar: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
 };
 
-// --- Mock Data: รายการวัตถุดิบชาบู ---
-const inventoryLogs = [
-  { id: 'LOG-1042', item: 'หมูสามชั้นสไลด์ (Pork Belly)', category: 'Meat', batch: 'B-0811', qty: '20 kg', receiveDate: '2026-08-11', expireDate: '2026-08-18', status: 'Fresh' },
-  { id: 'LOG-1041', item: 'เนื้อวากิว A4 (Wagyu Beef)', category: 'Meat', batch: 'B-0810', qty: '15 kg', receiveDate: '2026-08-10', expireDate: '2026-08-15', status: 'Fresh' },
-  { id: 'LOG-1040', item: 'ผักกาดขาว (Napa Cabbage)', category: 'Vegetable', batch: 'V-0808', qty: '10 kg', receiveDate: '2026-08-08', expireDate: '2026-08-12', status: 'Expiring Soon' },
-  { id: 'LOG-1039', item: 'เห็ดเข็มทอง (Enoki)', category: 'Vegetable', batch: 'V-0805', qty: '5 kg', receiveDate: '2026-08-05', expireDate: '2026-08-10', status: 'Expired' },
-  { id: 'LOG-1038', item: 'ลูกชิ้นปลา (Fish Balls)', category: 'Others', batch: 'O-0809', qty: '30 pkgs', receiveDate: '2026-08-09', expireDate: '2026-08-23', status: 'Fresh' },
-  { id: 'LOG-1037', item: 'น้ำซุปดำ (Sukiyaki Broth)', category: 'Others', batch: 'O-0801', qty: '50 liters', receiveDate: '2026-08-01', expireDate: '2026-09-01', status: 'Fresh' },
-];
-
 export default function InventoryLogsPage() {
+  const { batches } = useInventory();
   const [activeTab, setActiveTab] = useState('All');
+  const [search, setSearch] = useState('');
+  const inventoryLogs = useMemo(() => batches
+    .filter((log) => activeTab === 'All' || log.category === activeTab)
+    .filter((log) => `${log.item} ${log.batch}`.toLowerCase().includes(search.toLowerCase()))
+    .sort((a, b) => a.receiveDate.localeCompare(b.receiveDate)), [activeTab, batches, search]);
 
   // ฟังก์ชันช่วยกำหนดสีของ Badge สถานะ
   const getStatusColor = (status: string) => {
@@ -52,7 +49,9 @@ export default function InventoryLogsPage() {
             </div>
             <input 
               type="text" 
-              placeholder="Search items or Batch ID..." 
+              placeholder="ค้นหาวัตถุดิบหรือรหัสล็อต..."
+              value={search}
+              onChange={(event) => setSearch(event.target.value)}
               className="w-full pl-10 pr-4 py-2 bg-white border border-[#e0dcd5] rounded-md text-sm outline-none focus:border-[#694b49] transition-colors"
             />
           </div>
@@ -127,9 +126,7 @@ export default function InventoryLogsPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-[#e8e3dd] bg-white">
-              {inventoryLogs
-                .filter(log => activeTab === 'All' || log.category === activeTab)
-                .map((log) => (
+              {inventoryLogs.map((log) => (
                 <tr key={log.id} className="hover:bg-[#faf8f5] transition-colors">
                   <td className="px-6 py-4 text-xs font-mono font-medium text-[#777]">{log.id}</td>
                   <td className="px-6 py-4">

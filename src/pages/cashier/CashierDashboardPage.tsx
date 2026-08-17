@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 // --- ไอคอนจาน ช้อน ส้อม (จำลองจากรูป) ---
 const DiningIcon = ({ status }: { status: 'available' | 'occupied' | 'cleaning' }) => {
@@ -49,6 +50,8 @@ const mockTables: Table[] = [
 export default function CashierDashboardPage() {
   const [selectedTable, setSelectedTable] = useState<Table | null>(mockTables[1]); // ค่าเริ่มต้นโชว์ Table 2
   const [paxInput, setPaxInput] = useState(2);
+  const [qrPrintedFor, setQrPrintedFor] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   return (
     <div className="flex w-full h-[calc(100vh-60px)]">
@@ -62,9 +65,6 @@ export default function CashierDashboardPage() {
             <h1 className="text-[28px] font-bold text-[#302221]">Table Status</h1>
             <p className="text-sm text-[#7B726B]">Manage seating, generate QR codes, and checkout.</p>
           </div>
-          <button className="px-4 py-2 bg-[#4A322F] text-white rounded-md text-sm font-bold shadow-sm hover:bg-[#3a2624] transition-colors">
-            + Add New Table
-          </button>
         </div>
 
         {/* Legend (คำอธิบายสี) */}
@@ -124,10 +124,11 @@ export default function CashierDashboardPage() {
                   <button onClick={() => setPaxInput(p => p + 1)} className="w-10 h-10 rounded-full border border-[#d6d0c4] flex items-center justify-center font-bold hover:bg-[#F4EFEA]">+</button>
                 </div>
                 
-                <button className="mt-auto w-full py-4 bg-[#10B981] hover:bg-[#059669] text-white font-bold rounded-lg shadow-md transition-colors flex items-center justify-center gap-2">
+                <button onClick={() => setQrPrintedFor(selectedTable.name)} className="mt-auto w-full py-4 bg-[#10B981] hover:bg-[#059669] text-white font-bold rounded-lg shadow-md transition-colors flex items-center justify-center gap-2">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
                   Open Table & Print QR
                 </button>
+                {qrPrintedFor === selectedTable.name && <p className="mt-3 text-center text-sm font-semibold text-emerald-700">สร้าง QR Code สำหรับ {selectedTable.name} แล้ว</p>}
               </div>
             )}
 
@@ -152,11 +153,11 @@ export default function CashierDashboardPage() {
                 </div>
 
                 <div className="mt-auto space-y-3">
-                  <button className="w-full py-3 bg-white border border-[#d6d0c4] text-[#302221] font-bold rounded-lg hover:bg-gray-50 transition-colors">
+                  <button onClick={() => navigate('/cashier/orders')} className="w-full py-3 bg-white border border-[#d6d0c4] text-[#302221] font-bold rounded-lg hover:bg-gray-50 transition-colors">
                     View Orders
                   </button>
-                  <button className="w-full py-4 bg-[#894833] hover:bg-[#683423] text-white font-bold rounded-lg shadow-md transition-colors">
-                    Checkout / Print Receipt
+                  <button onClick={() => navigate('/cashier/payment')} className="w-full py-4 bg-[#894833] hover:bg-[#683423] text-white font-bold rounded-lg shadow-md transition-colors">
+                    Checkout
                   </button>
                 </div>
               </div>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 // --- Icons ชุดใหม่สำหรับหน้านี้ ---
@@ -8,7 +8,6 @@ const Icons = {
   QrCode: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>,
   CreditCard: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>,
   Delete: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"></path><line x1="18" y1="9" x2="12" y2="15"></line><line x1="12" y1="9" x2="18" y2="15"></line></svg>,
-  Print: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>,
   CheckCircle: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
 };
 
@@ -184,16 +183,8 @@ export default function CashierPaymentPage() {
           </div>
 
           {/* Action Buttons ด้านล่างสุด */}
-          <div className="flex gap-4 mt-auto">
-            {/* 👇 ใส่ onClick สำหรับสลับไปหน้าใบเสร็จตรงนี้ */}
-            <button 
-              onClick={() => navigate('/cashier/receipt')} 
-              className="flex-1 py-5 bg-[#EAE5DF] hover:bg-[#d6d0c4] text-[#302221] font-bold rounded-xl transition-colors flex items-center justify-center gap-2"
-            >
-              <Icons.Print /> พิมพ์ใบเสร็จ (Print Receipt)
-            </button>
-            
-            <button className="flex-[2] py-5 bg-[#5A403E] hover:bg-[#4a322f] text-white font-bold rounded-xl shadow-md transition-colors flex items-center justify-center gap-2">
+          <div className="mt-auto">
+            <button className="w-full py-5 bg-[#5A403E] hover:bg-[#4a322f] text-white font-bold rounded-xl shadow-md transition-colors flex items-center justify-center gap-2">
               <Icons.CheckCircle /> ยืนยันการชำระเงิน (Confirm Payment)
             </button>
           </div>

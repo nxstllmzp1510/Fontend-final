@@ -1,4 +1,3 @@
-import React from 'react';
 
 // --- Icons สำหรับหน้านี้ ---
 const Icons = {

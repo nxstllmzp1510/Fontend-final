@@ -1,15 +1,19 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { type UserRole, useAuth } from '../../contexts/AuthContext';
 
 // 1. ต้องมีบรรทัดนี้เพื่อประกาศสร้างหน้า LoginPage
 export default function LoginPage() {
   const navigate = useNavigate(); // 2. เรียกใช้งาน navigate สำหรับเปลี่ยนหน้า
   const [showPassword, setShowPassword] = useState(false);
   const [remember, setRemember] = useState(false);
+  const [role, setRole] = useState<UserRole>('admin');
+  const { login } = useAuth();
+  const homeByRole: Record<UserRole, string> = { admin: '/admin', kitchen: '/kitchen', server: '/server', cashier: '/cashier' };
 
   return (
-    <main className="min-h-screen bg-[#dbe5f5] p-4 md:p-8">
-      <div className="mx-auto flex min-h-[calc(100vh-4rem)] max-w-[1400px] overflow-hidden bg-[#fbf8f3]">
+    <main className="min-h-screen bg-[#fbf8f3]">
+      <div className="flex min-h-screen w-full overflow-hidden bg-[#fbf8f3]">
         {/* Left Branding Section */}
         <section className="relative hidden w-1/2 flex-col bg-[#302221] px-10 py-14 text-white lg:flex">
           <div className="mb-8">
@@ -70,7 +74,8 @@ export default function LoginPage() {
             <form
               onSubmit={(event) => {
                 event.preventDefault();
-                // ถ้า Login ผ่าน ค่อยให้ navigate('/dashboard'); ตรงนี้
+                login(role);
+                navigate(homeByRole[role]);
               }}
               className="space-y-4"
             >
@@ -103,6 +108,16 @@ export default function LoginPage() {
                     focus:ring-[#694b49]/10
                   "
                 />
+              </div>
+
+              <div>
+                <label htmlFor="role" className="mb-2 block text-xs font-medium tracking-wide text-[#4f5357]">Role</label>
+                <select id="role" value={role} onChange={(event) => setRole(event.target.value as UserRole)} className="h-12 w-full rounded-md border border-[#c9d0ce] bg-white px-4 text-sm outline-none focus:border-[#694b49]">
+                  <option value="admin">Owner / Admin</option>
+                  <option value="kitchen">Kitchen Staff</option>
+                  <option value="server">Service Staff</option>
+                  <option value="cashier">Cashier</option>
+                </select>
               </div>
 
               <div>

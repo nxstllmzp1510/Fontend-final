@@ -1,116 +1,24 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom'; // 👈 1. นำเข้า useNavigate
+import { useNavigate } from 'react-router-dom';
+import { type UserRole } from '../../contexts/AuthContext';
+import { useInventory } from '../../contexts/InventoryContext';
 
-const Icons = {
-  Calendar: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>,
-  AlertTriangle: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C53030" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>,
-  ArrowRight: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-};
+const generic: Record<'server' | 'cashier', { title: string; cards: Array<[string, string]> }> = { server: { title: 'Service Dashboard', cards: [['Dining tables', '9'], ['Ready to serve', '6'], ['Waiting guests', '2']] }, cashier: { title: 'Cashier Dashboard', cards: [['Available tables', '12'], ['Occupied tables', '5'], ['Open bills', '5']] } };
 
-export default function StaffDashboardPage() {
-  const navigate = useNavigate(); // 👈 2. เรียกใช้งาน
+export default function StaffDashboardPage({ role }: { role: Exclude<UserRole, 'admin'> }) {
+  const { batches, fifoQueue } = useInventory(); const navigate = useNavigate();
+  if (role !== 'kitchen') { const data = generic[role]; return <div className="max-w-6xl"><h1 className="text-4xl font-black text-[#2D1B17]">{data.title}</h1><div className="mt-6 grid gap-5 md:grid-cols-3">{data.cards.map(([label, value], index) => <MiniMetric key={label} label={label} value={value} index={index}/>)}</div></div>; }
+  const usable = batches.filter((batch) => batch.status !== 'Expired'); const expiring = batches.filter((batch) => batch.status === 'Expiring Soon'); const expired = batches.filter((batch) => batch.status === 'Expired');
+  const categoryCount = (['Meat', 'Vegetable', 'Others'] as const).map((category) => ({ category, count: usable.filter((batch) => batch.category === category).length }));
+  return <div className="w-full max-w-[1240px]">
+    <section className="relative mb-7 overflow-hidden rounded-[28px] border-2 border-[#2D1B17] bg-[#B97861] px-7 py-8 shadow-[8px_8px_0_#2D1B17] sm:px-9"><div className="absolute -right-12 -top-16 h-52 w-52 rounded-full border-[28px] border-[#D9B99A]/50"/><div className="absolute bottom-4 right-28 rotate-6 rounded-full border-2 border-[#2D1B17] bg-[#E8D8CA] px-4 py-2 text-xs font-black shadow-[3px_3px_0_#2D1B17]">FIFO FIRST! ✦</div><div className="relative max-w-2xl"><span className="inline-flex rotate-[-2deg] rounded-full border-2 border-[#2D1B17] bg-[#FFF8EF] px-3 py-1 text-[10px] font-black uppercase tracking-[.16em] shadow-[2px_2px_0_#2D1B17]">Restaurant inventory</span><h1 className="mt-5 text-4xl font-black leading-tight tracking-[-.035em] text-[#2D1B17] sm:text-5xl">คลังพร้อม ครัวพร้อม<br/><span className="text-[#FFF8EF] drop-shadow-[2px_2px_0_#2D1B17]">ทุกกะก็พร้อมลุย.</span></h1><p className="mt-4 max-w-lg text-sm font-semibold leading-6 text-[#563128]">เช็กล็อตคงเหลือ จัด FIFO และเคลียร์วัตถุดิบเสี่ยงก่อนเริ่มรอบแบบไม่หลุด flow</p><div className="mt-6 flex flex-wrap gap-3"><button onClick={() => navigate('/kitchen/lots/new')} className="rounded-xl border-2 border-[#2D1B17] bg-[#2D1B17] px-5 py-3 text-sm font-black text-white shadow-[4px_4px_0_#D9B99A] transition hover:-translate-y-0.5">+ รับของเข้าคลัง</button><button onClick={() => navigate('/kitchen/transfer-stocks')} className="rounded-xl border-2 border-[#2D1B17] bg-[#FFF8EF] px-5 py-3 text-sm font-black text-[#2D1B17] shadow-[4px_4px_0_#2D1B17] transition hover:-translate-y-0.5">โอนย้ายสต็อก →</button></div></div></section>
 
-  // ข้อมูลเมนูยอดฮิต (mockup)
-  const topSelling = [
-    { name: "ข้าวหมกหมาว้อ", orders: 124, color: "#894833", width: "95%" },
-    { name: "แมวทอดกระเทียม", orders: 98, color: "#A66B57", width: "75%" },
-    { name: "ต้มอึ่ง", orders: 85, color: "#C79A8B", width: "60%" },
-    { name: "ล่าจิ้น ใส่ดีงัว", orders: 62, color: "#DDBFB5", width: "45%" },
-  ];
+    <section className="mb-7 grid gap-5 sm:grid-cols-2 xl:grid-cols-4"><PopMetric label="พร้อมใช้" value={usable.length} detail="ล็อตที่เบิกใช้ได้" color="bg-[#F1E2CF]" symbol="✦"/><PopMetric label="คิว FIFO" value={fifoQueue.length} detail="รอหยิบตามลำดับ" color="bg-[#DBC8B8]" symbol="↳"/><PopMetric label="ใกล้หมดอายุ" value={expiring.length} detail="ใช้ภายใน 3 วัน" color="bg-[#E7C7B8]" symbol="!"/><PopMetric label="แยกออก" value={expired.length} detail="ห้ามนำไปใช้" color="bg-[#E8D8CA]" symbol="×"/></section>
 
-  return (
-    <div className="w-full h-[calc(100vh-60px)] p-8 overflow-y-auto bg-[#FDFBF7]">
-      
-      {/* Header */}
-      <div className="flex justify-between items-end mb-8">
-        <div>
-          <h1 className="text-3xl font-bold text-[#302221] mb-1">Overview</h1>
-          <p className="text-sm text-[#7B726B]">Real-time metrics for today, Aug 15.</p>
-        </div>
-        <button className="flex items-center gap-2 border border-[#d6d0c4] bg-white px-3 py-1.5 rounded-md text-xs font-bold text-[#302221] shadow-sm hover:bg-gray-50">
-          <Icons.Calendar /> This Week
-        </button>
-      </div>
-
-      {/* Top Selling Dishes Card */}
-      <div className="bg-white border border-[#EAE5DF] rounded-xl p-8 mb-8 shadow-sm">
-        <div className="flex justify-between items-center mb-6 border-b border-[#EAE5DF] pb-4">
-          <h2 className="font-bold text-[#302221] text-lg">Top Selling Dishes</h2>
-          <button className="text-[11px] font-mono font-bold text-[#302221] uppercase tracking-wider hover:underline">
-            View All Menu
-          </button>
-        </div>
-
-        <div className="space-y-5">
-          {topSelling.map((item, index) => (
-            <div key={index} className="flex flex-col gap-2">
-              <div className="flex justify-between items-center text-sm font-semibold text-[#302221]">
-                <span>{item.name}</span>
-                <span className="font-mono">{item.orders} orders</span>
-              </div>
-              <div className="h-2 w-full bg-[#F4EFEA] rounded-full overflow-hidden">
-                <div 
-                  className="h-full rounded-full" 
-                  style={{ width: item.width, backgroundColor: item.color }}
-                ></div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Bottom Grid (2 Columns) */}
-      <div className="grid grid-cols-2 gap-8">
-        
-        {/* 👈 3. เปลี่ยนจากกล่องว่างๆ เป็นปุ่มลัดไปหน้าโต๊ะอาหาร */}
-        <div 
-          onClick={() => navigate('/staff/tables')}
-          className="bg-white rounded-xl shadow-[0_4px_20px_rgb(0,0,0,0.05)] border border-[#EAE5DF] h-[280px] p-6 flex flex-col cursor-pointer hover:shadow-md hover:border-[#5A403E] transition-all group"
-        >
-          <div className="flex-1">
-            <h3 className="font-bold text-[#302221] text-lg mb-1">จัดการออเดอร์โต๊ะอาหาร</h3>
-            <p className="text-sm text-[#7B726B] mb-6">Dining Table Management</p>
-            
-            <div className="flex gap-4">
-              <div className="flex-1 bg-[#FEF2F2] p-4 rounded-xl text-center">
-                <span className="block text-4xl font-black text-[#E53E3E]">2</span>
-                <span className="text-[11px] font-bold text-[#E53E3E] uppercase mt-2 block">New Orders</span>
-              </div>
-              <div className="flex-1 bg-[#D1FAE5] p-4 rounded-xl text-center">
-                <span className="block text-4xl font-black text-[#059669]">4</span>
-                <span className="text-[11px] font-bold text-[#059669] uppercase mt-2 block">Eating</span>
-              </div>
-            </div>
-          </div>
-
-          <button className="w-full mt-4 py-2.5 bg-[#F4EFEA] group-hover:bg-[#5A403E] group-hover:text-white text-[#5A403E] font-bold rounded-lg transition-colors flex items-center justify-center gap-2">
-            ดูสถานะโต๊ะทั้งหมด <Icons.ArrowRight />
-          </button>
-        </div>
-
-        {/* Right: Stock Alert Card */}
-        <div>
-          <div className="bg-[#FCE8E8] border border-[#F8CACA] rounded-xl p-6 shadow-sm">
-            <div className="flex items-start gap-4 mb-4">
-              <div className="bg-[#FED7D7] p-2 rounded-md">
-                <Icons.AlertTriangle />
-              </div>
-              <div>
-                <h3 className="font-bold text-[#C53030] text-lg mb-1">Stock Alert: Critical</h3>
-                <p className="text-sm text-[#C53030] leading-relaxed">
-                  5 items expiring in less than 48h. Estimated value at risk: $145.00.
-                </p>
-              </div>
-            </div>
-            
-            <button className="mt-4 px-6 py-2.5 bg-[#C53030] hover:bg-[#9B2C2C] text-white text-sm font-bold rounded-lg shadow-sm transition-colors">
-              ตรวจสอบรายการที่หมดอายุ
-            </button>
-          </div>
-        </div>
-
-      </div>
-
-    </div>
-  );
+    <section className="grid gap-6 xl:grid-cols-[1.45fr_.75fr]"><div className="overflow-hidden rounded-[24px] border-2 border-[#2D1B17] bg-white shadow-[6px_6px_0_#2D1B17]"><div className="flex items-center justify-between border-b-2 border-[#2D1B17] bg-[#F1E2CF] px-6 py-5"><div><p className="text-[10px] font-black uppercase tracking-[.16em] text-[#7A5544]">Pick list</p><h2 className="mt-1 text-xl font-black text-[#2D1B17]">คิวหยิบแบบ FIFO</h2></div><span className="rotate-2 rounded-full border-2 border-[#2D1B17] bg-white px-3 py-1 text-xs font-black shadow-[2px_2px_0_#2D1B17]">{fifoQueue.length} LOTS</span></div><div className="divide-y-2 divide-[#2D1B17]/10">{fifoQueue.slice(0, 5).map((batch, index) => <div key={batch.id} className="group flex flex-col gap-3 px-6 py-4 transition hover:bg-[#F7EDE2] sm:flex-row sm:items-center"><span className={`flex h-10 w-10 shrink-0 rotate-[-4deg] items-center justify-center rounded-xl border-2 border-[#2D1B17] text-sm font-black shadow-[2px_2px_0_#2D1B17] ${index === 0 ? 'bg-[#B97861]' : 'bg-[#FFF8EF]'}`}>{String(index + 1).padStart(2, '0')}</span><div className="min-w-0 flex-1"><p className="font-black text-[#2D1B17]">{batch.item} <span className="ml-1 font-mono text-[10px] font-bold text-[#947870]">#{batch.batch}</span></p><p className="mt-1 text-xs font-medium text-[#80665D]">รับเข้า {batch.receiveDate} · เหลือ {batch.qty}</p></div><div className="sm:text-right"><p className="text-xs font-bold text-[#563D35]">EXP {batch.expireDate}</p><span className={`mt-1 inline-flex rounded-full border-2 border-[#2D1B17] px-2 py-0.5 text-[9px] font-black ${batch.status === 'Expiring Soon' ? 'bg-[#E7C7B8]' : 'bg-[#E8D8CA]'}`}>{batch.status === 'Expiring Soon' ? 'USE ME FIRST' : 'GOOD TO GO'}</span></div></div>)}</div><button onClick={() => navigate('/kitchen/freezer-stock')} className="w-full border-t-2 border-[#2D1B17] bg-[#2D1B17] px-6 py-3.5 text-xs font-black text-white transition hover:bg-[#513129]">เปิดคลังทั้งหมด →</button></div>
+      <div className="space-y-6"><article className="rounded-[24px] border-2 border-[#2D1B17] bg-[#DBC8B8] p-6 shadow-[6px_6px_0_#2D1B17]"><div className="flex items-center justify-between"><h2 className="text-lg font-black">Stock mix</h2><span className="text-xl">◒</span></div><p className="mt-1 text-xs font-semibold text-[#6F554D]">ล็อตพร้อมใช้แยกตามหมวด</p><div className="mt-5 space-y-4">{categoryCount.map(({ category, count }, index) => { const label = { Meat: 'เนื้อสัตว์', Vegetable: 'ผัก', Others: 'วัตถุดิบอื่น' }[category]; const colors = ['bg-[#B97861]', 'bg-[#CFAE91]', 'bg-[#E8D8CA]']; return <div key={category}><div className="mb-1.5 flex justify-between text-xs font-black"><span>{label}</span><span>{count} LOTS</span></div><div className="h-3 overflow-hidden rounded-full border-2 border-[#2D1B17] bg-white"><div className={`h-full ${colors[index]}`} style={{ width: `${usable.length ? Math.max(12, count / usable.length * 100) : 0}%` }}/></div></div>; })}</div></article><article className="relative rotate-[1deg] rounded-[24px] border-2 border-[#2D1B17] bg-[#E7C7B8] p-6 shadow-[6px_6px_0_#2D1B17]"><span className="absolute -top-3 right-5 rounded-full border-2 border-[#2D1B17] bg-[#2D1B17] px-3 py-1 text-[9px] font-black text-white">TO-DO</span><h2 className="text-lg font-black">ก่อนเปิดรอบ ✦</h2><div className="mt-4 space-y-2"><p className="rounded-xl border-2 border-[#2D1B17] bg-white px-3 py-2.5 text-xs font-bold"><b className="text-[#8C4C39]">{expiring.length}</b> ล็อต ต้องหยิบใช้ก่อน</p><p className="rounded-xl border-2 border-[#2D1B17] bg-white px-3 py-2.5 text-xs font-bold"><b className="text-[#8C4C39]">{expired.length}</b> ล็อต ต้องแยกออก</p></div></article></div>
+    </section>
+  </div>;
 }
+
+function PopMetric({ label, value, detail, color, symbol }: { label: string; value: number; detail: string; color: string; symbol: string }) { return <article className={`group relative overflow-hidden rounded-[22px] border-2 border-[#2D1B17] p-5 shadow-[5px_5px_0_#2D1B17] transition hover:-translate-y-1 ${color}`}><span className="absolute right-4 top-3 text-3xl font-black opacity-20">{symbol}</span><p className="text-[10px] font-black uppercase tracking-[.14em] text-[#6D5148]">{label}</p><p className="mt-2 text-4xl font-black tracking-tight text-[#2D1B17]">{String(value).padStart(2, '0')}</p><p className="mt-1 text-xs font-bold text-[#745B52]">{detail}</p></article>; }
+function MiniMetric({ label, value, index }: { label: string; value: string; index: number }) { const colors = ['bg-[#F1E2CF]', 'bg-[#DBC8B8]', 'bg-[#E8D8CA]']; return <article className={`rounded-[22px] border-2 border-[#2D1B17] p-5 shadow-[5px_5px_0_#2D1B17] ${colors[index]}`}><p className="text-xs font-black uppercase">{label}</p><p className="mt-2 text-4xl font-black">{value}</p></article>; }

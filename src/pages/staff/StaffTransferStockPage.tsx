@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const Icons = {
@@ -17,7 +16,7 @@ export default function StaffTransferStockPage() {
   const navigate = useNavigate();
 
   // ข้อมูลจำลองรายการที่ต้องการย้ายสต็อก
-  const [items, setItems] = useState([
+  const items = [
     {
       id: 1,
       name: "Bulk Wagyu Beef (A5)",
@@ -36,7 +35,7 @@ export default function StaffTransferStockPage() {
       transferQty: "5.0",
       img: "https://images.unsplash.com/photo-1577640905050-83665af216b9?w=100&h=100&fit=crop"
     }
-  ]);
+  ];
 
   const totalItems = items.length;
   const totalWeight = items.reduce((acc, curr) => acc + (parseFloat(curr.transferQty) || 0), 0);
@@ -110,7 +109,7 @@ export default function StaffTransferStockPage() {
         </div>
 
         <div className="divide-y divide-[#EAE5DF]">
-          {items.map((item, index) => (
+          {items.map((item) => (
             <div key={item.id} className="p-6 flex items-center justify-between">
               
               {/* Product Info */}

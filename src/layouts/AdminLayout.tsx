@@ -1,4 +1,5 @@
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
+import { useAuth } from '../contexts/AuthContext';
 
 // --- ไอคอนชุดใหม่สำหรับ Sidebar ---
 const Icons = {
@@ -15,6 +16,7 @@ const Icons = {
 export default function AdminLayout() {
   const navigate = useNavigate();
   const location = useLocation();
+  const { logout } = useAuth();
 
   // อัปเดตชื่อเมนูและเส้นทางให้ตรงกับดีไซน์ใหม่
   const navItems = [
@@ -62,7 +64,7 @@ export default function AdminLayout() {
 
         {/* เมนูด้านล่าง */}
         <div className="p-4 border-t border-[#e5dfd8] space-y-1 px-3">
-          <button className="w-full flex items-center gap-3.5 px-4 py-2.5 text-[13px] font-semibold text-[#7B726B] hover:bg-[#ede8e1] hover:text-[#302221] rounded-lg transition-colors">
+          <button onClick={() => { logout(); navigate('/', { replace: true }); }} className="w-full flex items-center gap-3.5 px-4 py-2.5 text-[13px] font-semibold text-[#7B726B] hover:bg-[#ede8e1] hover:text-[#302221] rounded-lg transition-colors">
             <Icons.Settings /> Settings
           </button>
           <button className="w-full flex items-center gap-3.5 px-4 py-2.5 text-[13px] font-semibold text-[#7B726B] hover:bg-[#ede8e1] hover:text-[#302221] rounded-lg transition-colors">

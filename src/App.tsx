@@ -13,22 +13,25 @@ import UserManagementPage from './pages/admin/UserManagementPage';
 import InventoryLogsPage from './pages/admin/InventoryLogsPage';
 import SystemLogsPage from './pages/admin/SystemLogsPage';
 import ExpiredGoodsPage from './pages/admin/ExpiredGoodsPage';
+import RoleGate from './components/RoleGate';
+import StaffLayout from './layouts/StaffLayout';
+import StaffDashboardPage from './pages/staff/StaffDashboardPage';
+import KitchenStockPage from './pages/staff/KitchenStockPage';
+import AddLotPage from './pages/staff/AddLotPage';
+import TransferStocksPage from './pages/staff/TransferStocksPage';
+import ServerOperationsPage from './pages/staff/ServerOperationsPage';
 
 // --- กลุ่มหน้า Cashier ---
-import CashierLayout from './layouts/CashierLayout';
 import CashierDashboardPage from './pages/cashier/CashierDashboardPage';
 import CashierOrderListPage from './pages/cashier/CashierOrderListPage'; 
 import CashierPaymentPage from './pages/cashier/CashierPaymentPage';
-import CashierReceiptPage from './pages/cashier/CashierReceiptPage'; 
 
 // --- กลุ่มหน้า Customer ---
 import CustomerMenuPage from './pages/customer/CustomerMenuPage'; 
 import CustomerCartPage from './pages/customer/CustomerCartPage';
 import CustomerSuccessPage from './pages/customer/CustomerSuccessPage'; 
 
-// --- กลุ่มหน้า Staff ---
-import StaffLayout from './layouts/StaffLayout';
-import StaffDashboardPage from './pages/staff/StaffDashboardPage';
+// --- กลุ่มหน้า Staff เดิม ---
 import StaffTableOrderPage from './pages/staff/StaffTableOrderPage';
 import StaffFreezerStockPage from './pages/staff/StaffFreezerStockPage';
 import StaffServingQueuePage from './pages/staff/StaffServingQueuePage';
@@ -46,7 +49,8 @@ function App() {
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
 
-        <Route path="/admin" element={<AdminLayout />}>
+        {/* เส้นทางกลุ่มหน้า Admin */}
+        <Route path="/admin" element={<RoleGate allowed={['admin']}><AdminLayout /></RoleGate>}>
           <Route index element={<DashboardPage />} />
           <Route path="menu" element={<MenuManagementPage />} />
           <Route path="user" element={<UserManagementPage />} /> 
@@ -55,19 +59,33 @@ function App() {
           <Route path="expired-inventory" element={<ExpiredGoodsPage />} />
         </Route>
 
-        <Route path="/cashier" element={<CashierLayout />}>
+        {/* เส้นทางกลุ่มหน้า Cashier */}
+        <Route path="/kitchen" element={<RoleGate allowed={['kitchen']}><StaffLayout role="kitchen" /></RoleGate>}>
+          <Route index element={<StaffDashboardPage role="kitchen" />} />
+          <Route path="freezer-stock" element={<KitchenStockPage area="Freezer Stock" />} />
+          <Route path="prep-fridge" element={<KitchenStockPage area="Prep Fridge" />} />
+          <Route path="lots/new" element={<AddLotPage />} />
+          <Route path="transfer-stocks" element={<TransferStocksPage />} />
+        </Route>
+
+        <Route path="/server" element={<RoleGate allowed={['server']}><StaffLayout role="server" /></RoleGate>}>
+          <Route index element={<StaffDashboardPage role="server" />} />
+          <Route path="tables" element={<ServerOperationsPage view="tables" />} />
+          <Route path="serve-queue" element={<ServerOperationsPage view="queue" />} />
+        </Route>
+
+        <Route path="/cashier" element={<RoleGate allowed={['cashier']}><StaffLayout role="cashier" /></RoleGate>}>
           <Route index element={<CashierDashboardPage />} />
           <Route path="orders" element={<CashierOrderListPage />} />
           <Route path="payment" element={<CashierPaymentPage />} />
-          <Route path="receipt" element={<CashierReceiptPage />} />
         </Route>
 
         <Route path="/order" element={<CustomerMenuPage />} />
         <Route path="/order/cart" element={<CustomerCartPage />} />
         <Route path="/order/success" element={<CustomerSuccessPage />} />
 
-        <Route path="/staff" element={<StaffLayout />}>
-          <Route index element={<StaffDashboardPage />} />
+        <Route path="/staff" element={<StaffLayout role="kitchen" />}>
+          <Route index element={<StaffDashboardPage role="kitchen" />} />
           
           {/* 2. ผูก Route เข้ากับ /staff/kitchen */}
           <Route path="kitchen" element={<StaffKitchenQueuePage />} />
